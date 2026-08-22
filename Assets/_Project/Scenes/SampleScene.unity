@@ -5029,6 +5029,19 @@ MonoBehaviour:
   - _key: {fileID: 7908624024885829619}
     _item: {fileID: 9028534551735398932}
     _id: 1
+  _mindBodyItems:
+  - _itemMind: {fileID: 4384911533467098168}
+    _itemBody: {fileID: 1037190749993955362}
+    _id: 0
+  - _itemMind: {fileID: 6159701126694906835}
+    _itemBody: {fileID: 7125108669323041583}
+    _id: 1
+  - _itemMind: {fileID: 2041344545732955754}
+    _itemBody: {fileID: 8121224663269284838}
+    _id: 2
+  - _itemMind: {fileID: 7255937764073454616}
+    _itemBody: {fileID: 3655000509506647791}
+    _id: 3
   _keyItemInHand:
   - _key: {fileID: 1088544692}
     _item: {fileID: 2007837749}
