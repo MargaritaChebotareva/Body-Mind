@@ -9,22 +9,38 @@ public class GameInput : MonoBehaviour
     private List<IMoveSubscriber> _moveSubscribers = new();
     private List<ILookSubscriber> _lookSubscribers = new();
     private List<IInteractSubscriber> _interactSubscribers = new();
+    private List<ILookAroundSubscriber> _lookAroundSubscribers = new();
+
     private InputAction _moveAction;
     private InputAction _lookAction;
-    private InputAction _interactAction;
+    private InputAction _interactAction; 
+    private InputAction _lookAroundAction;
 
+    private bool _isLookAroundTurnOn = false;
 
     private void OnEnable()
     {
         _moveAction = _inputActionAsset.FindAction("Move");
         _lookAction = _inputActionAsset.FindAction("Look");
         _interactAction = _inputActionAsset.FindAction("Interact");
+        _lookAroundAction = _inputActionAsset.FindAction("LookAround");
 
         _interactAction.performed += OnInteractActionPerformed;
+        _lookAroundAction.performed += OnLookAroundActionPerformed;
 
         _moveAction.Enable();
         _lookAction.Enable();
         _interactAction.Enable();
+        _lookAroundAction.Enable();
+    }
+
+    private void OnLookAroundActionPerformed(InputAction.CallbackContext obj)
+    {
+        _isLookAroundTurnOn = !_isLookAroundTurnOn;
+        foreach (var item in _lookAroundSubscribers)
+        {
+            item.OnLookAround(_isLookAroundTurnOn);
+        }
     }
 
     private void OnInteractActionPerformed(InputAction.CallbackContext obj)
@@ -55,6 +71,7 @@ public class GameInput : MonoBehaviour
         _moveAction.Disable();
         _lookAction.Disable();
         _interactAction.Disable();
+        _lookAroundAction.Disable();
     }
 
     public void RegistrateMove(IMoveSubscriber moveSubscriber)
@@ -86,6 +103,16 @@ public class GameInput : MonoBehaviour
     {
         _interactSubscribers.Remove(interactSubscriber);
     }
+
+    public void RegistrateLookAround(ILookAroundSubscriber lookAroundSubscriber)
+    {
+        _lookAroundSubscribers.Add(lookAroundSubscriber);
+    }
+
+    public void UnregistrateLookAround(ILookAroundSubscriber lookAroundSubscriber)
+    {
+        _lookAroundSubscribers.Remove(lookAroundSubscriber);
+    }
 }
 
 public interface IMoveSubscriber
@@ -101,4 +128,9 @@ public interface ILookSubscriber
 public interface IInteractSubscriber
 {
     public void OnInteract();
+}
+
+public interface ILookAroundSubscriber
+{
+    public void OnLookAround(bool value);
 }
