@@ -1,0 +1,104 @@
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class GameInput : MonoBehaviour
+{
+    [SerializeField] private InputActionAsset _inputActionAsset;
+
+    private List<IMoveSubscriber> _moveSubscribers = new();
+    private List<ILookSubscriber> _lookSubscribers = new();
+    private List<IInteractSubscriber> _interactSubscribers = new();
+    private InputAction _moveAction;
+    private InputAction _lookAction;
+    private InputAction _interactAction;
+
+
+    private void OnEnable()
+    {
+        _moveAction = _inputActionAsset.FindAction("Move");
+        _lookAction = _inputActionAsset.FindAction("Look");
+        _interactAction = _inputActionAsset.FindAction("Interact");
+
+        _interactAction.performed += OnInteractActionPerformed;
+
+        _moveAction.Enable();
+        _lookAction.Enable();
+        _interactAction.Enable();
+    }
+
+    private void OnInteractActionPerformed(InputAction.CallbackContext obj)
+    {
+        foreach (var item in _interactSubscribers)
+        {
+            item.OnInteract();
+        }
+    }
+
+    private void Update()
+    {
+        var look = _lookAction.ReadValue<Vector2>();
+        foreach (var item in _lookSubscribers)
+        {
+            item.OnLook(look);
+        }
+        var movement = _moveAction.ReadValue<Vector2>();
+        foreach (var item in _moveSubscribers)
+        {
+            item.OnMove(movement);
+        }
+
+    }
+
+    private void OnDestroy()
+    {
+        _moveAction.Disable();
+        _lookAction.Disable();
+        _interactAction.Disable();
+    }
+
+    public void RegistrateMove(IMoveSubscriber moveSubscriber)
+    {
+        _moveSubscribers.Add(moveSubscriber);
+    }
+
+    public void UnregistrateMove(IMoveSubscriber moveSubscriber)
+    {
+        _moveSubscribers.Remove(moveSubscriber);
+    }
+
+    public void RegistrateLook(ILookSubscriber lookSubscriber)
+    {
+        _lookSubscribers.Add(lookSubscriber);
+    }
+
+    public void UnregistrateLook(ILookSubscriber lookSubscriber)
+    {
+        _lookSubscribers.Remove(lookSubscriber);
+    }
+
+    public void RegistrateInteract(IInteractSubscriber interactSubscriber)
+    {
+        _interactSubscribers.Add(interactSubscriber);
+    }
+
+    public void UnregistrateIneract(IInteractSubscriber interactSubscriber)
+    {
+        _interactSubscribers.Remove(interactSubscriber);
+    }
+}
+
+public interface IMoveSubscriber
+{
+    public void OnMove(Vector2 movement);
+}
+
+public interface ILookSubscriber
+{
+    public void OnLook(Vector2 look);
+}
+
+public interface IInteractSubscriber
+{
+    public void OnInteract();
+}
