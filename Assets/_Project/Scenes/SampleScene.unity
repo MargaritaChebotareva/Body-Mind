@@ -411,6 +411,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7b3753bb1097d64da2404b60e0b592e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _keyController: {fileID: 2009597539}
 --- !u!64 &63439792
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -801,6 +802,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7b3753bb1097d64da2404b60e0b592e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _keyController: {fileID: 2009597539}
 --- !u!1 &259500187
 GameObject:
   m_ObjectHideFlags: 0
@@ -1329,6 +1331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7b3753bb1097d64da2404b60e0b592e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _keyController: {fileID: 2009597539}
 --- !u!64 &356131895
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4551,6 +4554,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7b3753bb1097d64da2404b60e0b592e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _keyController: {fileID: 2009597539}
 --- !u!1001 &1842678971
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5049,6 +5053,11 @@ MonoBehaviour:
   - _key: {fileID: 787153414}
     _item: {fileID: 1691943374}
     _id: 1
+  _doorsAndKeys:
+  - Key: 0
+    Door: {fileID: 6626210554891794005}
+  - Key: 1
+    Door: {fileID: 7435065099161136918}
 --- !u!4 &2009597540
 Transform:
   m_ObjectHideFlags: 0
@@ -5173,6 +5182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7b3753bb1097d64da2404b60e0b592e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _keyController: {fileID: 2009597539}
 --- !u!64 &2086932627
 MeshCollider:
   m_ObjectHideFlags: 0

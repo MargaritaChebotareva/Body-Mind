@@ -8,6 +8,7 @@ public class Door : MonoBehaviour, IInteractable
     private Coroutine _coroutine;
     private Quaternion _openRotation;
     private Quaternion _closeRotation;
+    [SerializeField] private KeyController _keyController;
 
     private void Start()
     {
@@ -17,7 +18,7 @@ public class Door : MonoBehaviour, IInteractable
 
     public void Interact(bool canInteract)
     {
-        if (canInteract)
+        if (_keyController.CanOpen(this))
         {
             var flag = !_isOpen;
             if (_coroutine != null)

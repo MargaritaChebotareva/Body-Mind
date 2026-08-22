@@ -145,3 +145,11 @@ public class MindBodyItem
         }
     }
 }
+
+
+[Serializable]
+public class KeyDoorItem
+{
+    [SerializeField] public int Key;
+    [SerializeField] public GameObject Door;
+}
