@@ -4,6 +4,7 @@ using UnityEngine;
 public class KeyController : MonoBehaviour
 {
     [SerializeField] private List<KeyItem> _keyItemOnScene;
+    [SerializeField] private List<MindBodyItem> _mindBodyItems;
     [SerializeField] private List<KeyItemNotInteract> _keyItemInHand;
 
     public void Init()
@@ -16,6 +17,11 @@ public class KeyController : MonoBehaviour
         foreach (var x in _keyItemInHand)
         {
             x.Init();
+        }
+
+        foreach (var x in _mindBodyItems)
+        {
+            x.Init(this);
         }
     }
 
@@ -33,6 +39,11 @@ public class KeyController : MonoBehaviour
         }
 
         foreach (var x in _keyItemInHand)
+        {
+            x.OnModeChanged(isBodyMode);
+        }
+
+        foreach (var x in _mindBodyItems)
         {
             x.OnModeChanged(isBodyMode);
         }
