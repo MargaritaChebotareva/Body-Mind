@@ -14,15 +14,34 @@ public class MovementController : MonoBehaviour, IMoveSubscriber
     private float _currentSpeed = 0f;
     private Vector3 _gravityMovement;
     private float _currentAnimationSpeed = 0f;
+    private bool _isBodyMode;
 
     public void Init(GameInput gameInput, AnimationController animationController)
     {
+        _isBodyMode = true;
         _gameInput = gameInput;
         _gameInput.RegistrateMove(this);
         _animationController = animationController;
     }
 
     public void OnMove(Vector2 movement)
+    {
+        if (_isBodyMode)
+        {
+            BodyMovement(movement);
+        }
+        else
+        {
+            BodyMovement(Vector2.zero);
+        }
+    }
+
+    public void OnModeChanged(bool isBodyMode)
+    {
+        _isBodyMode = isBodyMode;
+    }
+
+    private void BodyMovement(Vector2 movement)
     {
         if (_characterController.isGrounded)
         {
@@ -64,6 +83,7 @@ public class MovementController : MonoBehaviour, IMoveSubscriber
         _gravityMovement.y += _gravity * Time.deltaTime;
         _characterController.Move(_gravityMovement * Time.deltaTime);
     }
+
 
     private void OnDestroy()
     {
