@@ -15,7 +15,6 @@ public class KeyController : MonoBehaviour
     private UIController _uiController;
     private GameInput _gameInput;
     private readonly HashSet<int> _keyItemInHandId = new();
-    private Coroutine _coroutineListenPin;
 
     public void Init(UIController uiController, GameInput gameInput)
     {
@@ -106,7 +105,7 @@ public class KeyController : MonoBehaviour
                 if (pin.Length > 0 && !char.IsDigit(c))
                 {
                     // invalid letter
-                    _uiController.WrongPin();
+                    _uiController.IncorrectPin();
                     return false;
                 }
 
@@ -120,14 +119,12 @@ public class KeyController : MonoBehaviour
                 {
                     if (pincodeItem.Pincode == pin)
                     {
-                        // correct pin
                         _uiController.CorrectPin();
                         door.OpenDoor();
                     }
                     else
                     {
-                        // incorrect pin
-                        _uiController.WrongPin();
+                        _uiController.IncorrectPin();
                     }
 
                     return false;

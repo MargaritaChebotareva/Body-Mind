@@ -38,14 +38,19 @@ public class UIController : MonoBehaviour
         _pinInput.text = pin;
     }
 
-    public void CorrectPin()
+    public void HideEnterPin()
     {
+        HidePin(false);
+    }
+
+    public void IncorrectPin()
+    {
+        _pinInput.text = "Incorrect PIN";
         HidePin(true);
     }
 
-    public void WrongPin()
+    public void CorrectPin()
     {
-        _pinInput.text = "Incorrect PIN";
         HidePin(true);
     }
 

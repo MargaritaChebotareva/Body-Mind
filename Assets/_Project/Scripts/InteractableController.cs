@@ -38,6 +38,7 @@ public class InteractableController : MonoBehaviour, IInteractSubscriber
             return item;
         }
         _uiController.HideTip();
+        _uiController.HideEnterPin();
         return null;
 
     }
