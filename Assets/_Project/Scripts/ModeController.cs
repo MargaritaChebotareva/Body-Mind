@@ -9,6 +9,8 @@ public class ModeController : MonoBehaviour, ILookAroundSubscriber
     private GameInput _gameInput;
     private KeyController _keyController;
     private MovementController _movementController;
+    private CinemachineCamera _currentPlayerCamera;
+    private Vector3 _viewPoint = new(0.5f, 0.5f, 0);
     public void Init(GameInput gameInput, KeyController keyController, MovementController movementController)
     {
         _gameInput = gameInput;
@@ -50,6 +52,7 @@ public class ModeController : MonoBehaviour, ILookAroundSubscriber
         _mindCamera.Priority.Value = 5;
         _keyController.OnModeChanged(true);
         _movementController.OnModeChanged(true);
+        _currentPlayerCamera = _bodyCamera;
     }
 
     private void FocusOnMind()
@@ -57,11 +60,19 @@ public class ModeController : MonoBehaviour, ILookAroundSubscriber
         _mindCamera.Priority.Value = 15;
         _keyController.OnModeChanged(false);
         _movementController.OnModeChanged(false);
+        _currentPlayerCamera = _mindCamera;
     }
 
     private void OnDestroy()
     {
         _gameInput.UnregistrateLookAround(this);
+    }
+
+    public Ray GetRay()
+    {
+        Ray ray = Camera.main.ViewportPointToRay(_viewPoint);
+        ray.origin = _currentPlayerCamera.Target.TrackingTarget.position;
+        return ray;
     }
 }
 
