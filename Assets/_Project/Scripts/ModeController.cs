@@ -32,6 +32,7 @@ public class ModeController : MonoBehaviour, ILookAroundSubscriber
 
     public void SetMenuMode(bool active)
     {
+        InitStates();
         if (active)
         {
             _menuCamera.Priority = 50;
@@ -42,6 +43,12 @@ public class ModeController : MonoBehaviour, ILookAroundSubscriber
             _menuCamera.Priority = 0;
             FocusOnBody();
         }
+    }
+
+    private void InitStates()
+    {
+        _keyController.InitStates();
+        _movementController.InitStates();
     }
 
     private void FocusOnBody()

@@ -16,12 +16,25 @@ public class MovementController : MonoBehaviour, IMoveSubscriber
     private float _currentAnimationSpeed = 0f;
     private bool _isBodyMode;
 
+    private Vector3 _initPosition;
+    private Quaternion _initRotation;
+
     public void Init(GameInput gameInput, AnimationController animationController)
     {
         _isBodyMode = true;
         _gameInput = gameInput;
         _gameInput.RegistrateMove(this);
         _animationController = animationController;
+
+        _initPosition = transform.position;
+        _initRotation = transform.rotation;
+    }
+
+    public void InitStates()
+    {
+        _characterController.enabled = false; // to be able to teleport
+        transform.SetPositionAndRotation(_initPosition, _initRotation);
+        _characterController.enabled = true;
     }
 
     public void OnMove(Vector2 movement)

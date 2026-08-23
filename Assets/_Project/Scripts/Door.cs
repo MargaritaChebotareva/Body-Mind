@@ -12,10 +12,22 @@ public class Door : MonoBehaviour, IInteractable
     public bool Locked = false;
     [SerializeField] public bool FinalDoor;
 
-    private void Start()
+    public void Init()
     {
         _closeRotation = transform.localRotation;
         _openRotation = _closeRotation * Quaternion.Euler(0f, 90, 0f);
+    }
+
+    public void ResetDoorState()
+    {
+        if (_coroutine != null)
+        {
+            StopCoroutine(_coroutine);
+            _coroutine = null;
+        }
+
+        transform.localRotation = _closeRotation;
+        _isOpen = false;
     }
 
     public void Interact(bool canInteract)
@@ -35,9 +47,10 @@ public class Door : MonoBehaviour, IInteractable
             StopCoroutine(_coroutine);
             _coroutine = null;
         }
+
         if (flag)
         {
-            _coroutine = StartCoroutine(Open(_openRotation, 3, () => { _isOpen = true; }));
+            _coroutine = StartCoroutine(Open(_openRotation, 1.5f, () => { _isOpen = true; }));
         }
         else
         {
@@ -58,5 +71,4 @@ public class Door : MonoBehaviour, IInteractable
         }
         callback?.Invoke();
     }
-
 }
