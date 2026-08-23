@@ -14,10 +14,13 @@ public class UIController : MonoBehaviour
     [SerializeField] private Text _messageText;
     [SerializeField] private Image _messageImage;
     [SerializeField] private Image _buttonPlay;
-
+    [SerializeField] private Image _fadeWhite;
     private Coroutine _coroutineHidePin;
     private Coroutine _coroutineHideMessage;
     private ModeController _modeController;
+
+    private static readonly Color _fadeColor0 = new Color(1, 1, 1, 1);
+    private static readonly Color _fadeColor100 = new Color(1, 1, 1, 0);
 
     public void Init(ModeController modeController)
     {
@@ -28,6 +31,7 @@ public class UIController : MonoBehaviour
         HidePin(false);
         HideMessage();
         ShowMenu();
+        _fadeWhite.color = _fadeColor100;
     }
 
     public void ShowTip()
@@ -98,10 +102,33 @@ public class UIController : MonoBehaviour
     public void Win()
     {
         ShowMessage("Victory!");
-        // todo make character unable to move
-        // todo fade white
-        // todo credits
+        StartCoroutine(WinRoutine());
+    }
+
+    private IEnumerator WinRoutine()
+    {
+        // todo lock all controls
+        _modeController.OnLookAround(true);
+
+        yield return new WaitForSeconds(1.5f);
+
+        var fadeTime = 2f;
+        var time = fadeTime;
+        while (time > 0)
+        {
+            time -= Time.deltaTime;
+            _fadeWhite.color = Color.Lerp(_fadeColor100, _fadeColor0, (fadeTime - time) / fadeTime);
+            yield return null;
+        }
+
         ShowMenu();
+
+        while (time < fadeTime)
+        {
+            time += Time.deltaTime;
+            _fadeWhite.color = Color.Lerp(_fadeColor0, _fadeColor100, time / fadeTime);
+            yield return null;
+        }
     }
 
     private void HidePin(bool delayed)

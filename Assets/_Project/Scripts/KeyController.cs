@@ -10,6 +10,7 @@ public class KeyController : MonoBehaviour
     [SerializeField] private List<KeyItemNotInteract> _keyItemInHand;
     [SerializeField] private List<KeyDoorItem> _doorsAndKeys;
     [SerializeField] private List<PincodeDoorItem> _pincodeDoors;
+    [SerializeField] private GameObject _allDoorsRoot;
 
     private UIController _uiController;
     private GameInput _gameInput;
@@ -22,14 +23,26 @@ public class KeyController : MonoBehaviour
         _gameInput = gameInput;
         _modeController = modeController;
 
+        foreach (var door in _allDoorsRoot.GetComponentsInChildren<Door>())
+        {
+            door.Init();
+        }
+
+        InitStates();
+    }
+
+    public void InitStates()
+    {
         foreach (var x in _keyItemOnScene)
         {
             x.Init(this);
+            x.SetActive(true);
         }
 
         foreach (var x in _keyItemInHand)
         {
             x.Init();
+            x.SetActive(false);
         }
 
         foreach (var x in _mindBodyItems)
@@ -46,6 +59,13 @@ public class KeyController : MonoBehaviour
         {
             x.Init();
         }
+
+        foreach (var door in _allDoorsRoot.GetComponentsInChildren<Door>())
+        {
+            door.ResetDoorState();
+        }
+
+        _keyItemInHandId.Clear();
     }
 
     public void ShowKey(int id)
