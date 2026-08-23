@@ -7,6 +7,8 @@ public class UIController : MonoBehaviour
 {
     [SerializeField] private Image _tip;
     [SerializeField] private Image _triggerTip;
+    [SerializeField] private Image _tip2;
+    [SerializeField] private Text _tip2Text;
 
     [SerializeField] private Image _pinLabel;
     [SerializeField] private Text _pinInput;
@@ -90,12 +92,15 @@ public class UIController : MonoBehaviour
     {
         _buttonPlay.gameObject.SetActive(true);
         _modeController.SetMenuMode(true);
+        _tip2.gameObject.SetActive(false);
     }
 
     public void ShowGame()
     {
         _buttonPlay.gameObject.SetActive(false);
+        _tip2.gameObject.SetActive(true);
         _modeController.SetMenuMode(false);
+        ShowMessage("Objective: open the door");
     }
 
     public void Win()
@@ -112,6 +117,7 @@ public class UIController : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
         _modeController.OnLookAround(false);
+        _tip2.gameObject.SetActive(false);
 
         var fadeTime = 2f;
         var time = fadeTime;
@@ -191,5 +197,10 @@ public class UIController : MonoBehaviour
         _messageText.text = text;
         _messageImage.gameObject.SetActive(true);
         HideMessageDelay();
+    }
+
+    public void ShowModeText(bool bodyMode)
+    {
+        _tip2Text.text = bodyMode ? "Attention" : "Relax";
     }
 }

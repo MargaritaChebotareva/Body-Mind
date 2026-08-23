@@ -9,16 +9,18 @@ public class ModeController : MonoBehaviour, ILookAroundSubscriber
     private GameInput _gameInput;
     private KeyController _keyController;
     private MovementController _movementController;
+    private UIController _uiController;
     private AudioSource _audioSource;
 
     private CinemachineCamera _currentPlayerCamera;
     private Vector3 _viewPoint = new(0.5f, 0.5f, 0);
-    public void Init(GameInput gameInput, KeyController keyController, MovementController movementController, SoundBar soundBar)
+    public void Init(GameInput gameInput, KeyController keyController, MovementController movementController, SoundBar soundBar, UIController uiController)
     {
         _gameInput = gameInput;
         _gameInput.RegistrateLookAround(this);
         _keyController = keyController;
         _movementController = movementController;
+        _uiController = uiController;
         SetMenuMode(true);
         if (soundBar.MindModeTheme != null)
         {
@@ -67,6 +69,7 @@ public class ModeController : MonoBehaviour, ILookAroundSubscriber
         _currentPlayerCamera = _bodyCamera;
         _keyController.OnModeChanged(true);
         _movementController.OnModeChanged(true);
+        _uiController.ShowModeText(true);
         if (!silent) _audioSource?.Stop();
     }
 
@@ -76,6 +79,7 @@ public class ModeController : MonoBehaviour, ILookAroundSubscriber
         _currentPlayerCamera = _mindCamera;
         _keyController.OnModeChanged(false);
         _movementController.OnModeChanged(false);
+        _uiController.ShowModeText(false);
         if (!silent) _audioSource?.Play();
     }
 
