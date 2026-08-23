@@ -9,15 +9,22 @@ public class ModeController : MonoBehaviour, ILookAroundSubscriber
     private GameInput _gameInput;
     private KeyController _keyController;
     private MovementController _movementController;
+    private AudioSource _audioSource;
+
     private CinemachineCamera _currentPlayerCamera;
     private Vector3 _viewPoint = new(0.5f, 0.5f, 0);
-    public void Init(GameInput gameInput, KeyController keyController, MovementController movementController)
+    public void Init(GameInput gameInput, KeyController keyController, MovementController movementController, SoundBar soundBar)
     {
         _gameInput = gameInput;
         _gameInput.RegistrateLookAround(this);
         _keyController = keyController;
         _movementController = movementController;
         SetMenuMode(true);
+        if (soundBar.MindModeTheme != null)
+        {
+            _audioSource = gameObject.AddComponent<AudioSource>();
+            _audioSource.clip = soundBar.MindModeTheme;
+        }
     }
 
     public void OnLookAround(bool value)
@@ -38,12 +45,12 @@ public class ModeController : MonoBehaviour, ILookAroundSubscriber
         if (active)
         {
             _menuCamera.Priority = 50;
-            FocusOnMind();
+            FocusOnMind(true);
         }
         else
         {
             _menuCamera.Priority = 0;
-            FocusOnBody();
+            FocusOnBody(true);
         }
     }
 
@@ -53,21 +60,23 @@ public class ModeController : MonoBehaviour, ILookAroundSubscriber
         _movementController.InitStates();
     }
 
-    private void FocusOnBody()
+    private void FocusOnBody(bool silent = false)
     {
         _bodyCamera.Priority.Value = 10;
         _mindCamera.Priority.Value = 5;
         _currentPlayerCamera = _bodyCamera;
         _keyController.OnModeChanged(true);
         _movementController.OnModeChanged(true);
+        if (!silent) _audioSource?.Stop();
     }
 
-    private void FocusOnMind()
+    private void FocusOnMind(bool silent = false)
     {
         _mindCamera.Priority.Value = 15;
         _currentPlayerCamera = _mindCamera;
         _keyController.OnModeChanged(false);
         _movementController.OnModeChanged(false);
+        if (!silent) _audioSource?.Play();
     }
 
     private void OnDestroy()
