@@ -5,6 +5,7 @@ public class ModeController : MonoBehaviour, ILookAroundSubscriber
 {
     [SerializeField] private CinemachineCamera _bodyCamera;
     [SerializeField] private CinemachineCamera _mindCamera;
+    [SerializeField] private CinemachineCamera _menuCamera;
     private GameInput _gameInput;
     private KeyController _keyController;
     private MovementController _movementController;
@@ -14,7 +15,7 @@ public class ModeController : MonoBehaviour, ILookAroundSubscriber
         _gameInput.RegistrateLookAround(this);
         _keyController = keyController;
         _movementController = movementController;
-        FocusOnBody();
+        SetMenuMode(true);
     }
 
     public void OnLookAround(bool value)
@@ -25,6 +26,20 @@ public class ModeController : MonoBehaviour, ILookAroundSubscriber
         }
         else
         {
+            FocusOnBody();
+        }
+    }
+
+    public void SetMenuMode(bool active)
+    {
+        if (active)
+        {
+            _menuCamera.Priority = 50;
+            FocusOnMind();
+        }
+        else
+        {
+            _menuCamera.Priority = 0;
             FocusOnBody();
         }
     }

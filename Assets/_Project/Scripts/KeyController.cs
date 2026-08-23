@@ -77,7 +77,7 @@ public class KeyController : MonoBehaviour
         // not locked door
         if (!door.Locked)
         {
-            door.OpenDoor();
+            ProceedWithOpening(door);
             return;
         }
 
@@ -87,7 +87,8 @@ public class KeyController : MonoBehaviour
         {
             if (_keyItemInHandId.Contains(keyItem.Key))
             {
-                door.OpenDoor();
+                _uiController.ShowMessage("Door unlocked");
+                ProceedWithOpening(door);
             }
 
             return;
@@ -120,7 +121,8 @@ public class KeyController : MonoBehaviour
                     if (pincodeItem.Pincode == pin)
                     {
                         _uiController.CorrectPin();
-                        door.OpenDoor();
+                        _uiController.ShowMessage("Door unlocked");
+                        ProceedWithOpening(door);
                     }
                     else
                     {
@@ -137,7 +139,16 @@ public class KeyController : MonoBehaviour
             return;
         }
 
-        door.OpenDoor();
+        ProceedWithOpening(door);
         return;
+    }
+
+    private void ProceedWithOpening(Door door)
+    {
+        door.OpenDoor();
+        if (door.FinalDoor)
+        {
+            _uiController.Win();
+        }
     }
 }

@@ -11,14 +11,19 @@ public class UIController : MonoBehaviour
 
     [SerializeField] private Text _messageText;
     [SerializeField] private Image _messageImage;
+    [SerializeField] private Image _buttonPlay;
     private Coroutine _coroutineHidePin;
     private Coroutine _coroutineHideMessage;
+    private ModeController _modeController;
 
-    public void Init()
+    public void Init(ModeController modeController)
     {
+        _modeController = modeController;
+        
         HideTip();
         HidePin(false);
         HideMessage();
+        ShowMenu();
     }
 
     public void ShowTip()
@@ -62,8 +67,28 @@ public class UIController : MonoBehaviour
     public void CorrectPin()
     {
         HidePin(true);
-        ShowMessage("Door unlocked");
         HideMessageDelay();
+    }
+
+    public void ShowMenu()
+    {
+        _buttonPlay.gameObject.SetActive(true);
+        _modeController.SetMenuMode(true);
+    }
+
+    public void ShowGame()
+    {
+        _buttonPlay.gameObject.SetActive(false);
+        _modeController.SetMenuMode(false);
+    }
+
+    public void Win()
+    {
+        ShowMessage("Victory!");
+        // todo make character unable to move
+        // todo fade white
+        // todo credits
+        ShowMenu();
     }
 
     private void HidePin(bool delayed)

@@ -10,6 +10,7 @@ public class Door : MonoBehaviour, IInteractable
     private Quaternion _closeRotation;
     [SerializeField] private KeyController _keyController;
     public bool Locked = false;
+    [SerializeField] public bool FinalDoor;
 
     private void Start()
     {
