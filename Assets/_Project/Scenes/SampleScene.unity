@@ -9120,7 +9120,8 @@ GameObject:
   - component: {fileID: 7838697207557037163}
   - component: {fileID: 7945580096178934586}
   - component: {fileID: 242087448}
-  m_Layer: 0
+  - component: {fileID: 7945580096178934587}
+  m_Layer: 6
   m_Name: Toilet.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10471,7 +10472,8 @@ GameObject:
   - component: {fileID: 510962441150883403}
   - component: {fileID: 1151354062748557425}
   - component: {fileID: 1275122710}
-  m_Layer: 0
+  - component: {fileID: 7177218185045448654}
+  m_Layer: 6
   m_Name: PS5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12127,6 +12129,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 543450652172721924}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7177218185045448654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5085821069858218264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4afb9abb3b3c3504588aede18b2dc25f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _clip: {fileID: 8300000, guid: ad7516f06858ad544916b3cbc976e45f, type: 3}
 --- !u!23 &7202271455737368112
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -12601,6 +12616,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &7945580096178934587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3234648441394683575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4afb9abb3b3c3504588aede18b2dc25f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _clip: {fileID: 8300000, guid: ff90efc93b1a5624e92c1c0d3c4bd946, type: 3}
 --- !u!1001 &7953194873749881847
 PrefabInstance:
   m_ObjectHideFlags: 0
