@@ -57,17 +57,17 @@ public class ModeController : MonoBehaviour, ILookAroundSubscriber
     {
         _bodyCamera.Priority.Value = 10;
         _mindCamera.Priority.Value = 5;
+        _currentPlayerCamera = _bodyCamera;
         _keyController.OnModeChanged(true);
         _movementController.OnModeChanged(true);
-        _currentPlayerCamera = _bodyCamera;
     }
 
     private void FocusOnMind()
     {
         _mindCamera.Priority.Value = 15;
+        _currentPlayerCamera = _mindCamera;
         _keyController.OnModeChanged(false);
         _movementController.OnModeChanged(false);
-        _currentPlayerCamera = _mindCamera;
     }
 
     private void OnDestroy()
@@ -75,11 +75,16 @@ public class ModeController : MonoBehaviour, ILookAroundSubscriber
         _gameInput.UnregistrateLookAround(this);
     }
 
-    public Ray GetRay()
+    public Ray GetPlayerRay()
     {
         Ray ray = Camera.main.ViewportPointToRay(_viewPoint);
         ray.origin = _currentPlayerCamera.Target.TrackingTarget.position;
         return ray;
+    }
+
+    public Ray GetCameraRay()
+    {
+        return Camera.main.ViewportPointToRay(_viewPoint);
     }
 }
 

@@ -15,13 +15,15 @@ public class KeyController : MonoBehaviour
     private UIController _uiController;
     private GameInput _gameInput;
     private ModeController _modeController;
+    private LayerMask _layerMask;
     private readonly HashSet<int> _keyItemInHandId = new();
 
-    public void Init(UIController uiController, GameInput gameInput, ModeController modeController)
+    public void Init(UIController uiController, GameInput gameInput, ModeController modeController, LayerMask layerMask)
     {
         _uiController = uiController;
         _gameInput = gameInput;
         _modeController = modeController;
+        _layerMask = layerMask;
 
         foreach (var door in _allDoorsRoot.GetComponentsInChildren<Door>())
         {
@@ -35,7 +37,7 @@ public class KeyController : MonoBehaviour
     {
         foreach (var x in _keyItemOnScene)
         {
-            x.Init(this);
+            x.Init(this, _modeController, _layerMask);
             x.SetActive(true);
         }
 
@@ -195,7 +197,7 @@ public class KeyController : MonoBehaviour
             var index = _keyItemOnScene.FindIndex(x => x.Id == id);
             var item = _keyItemOnScene[index];
             var position = item.GetKeyPos();
-            var ray = _modeController.GetRay();
+            var ray = _modeController.GetPlayerRay();
             var cameraDir = ray.direction;
             var itemDir = (position - ray.origin).normalized;
             cameraDir.y = 0;
@@ -204,7 +206,7 @@ public class KeyController : MonoBehaviour
             itemDir.Normalize();
             float dotProduct = Vector3.Dot(cameraDir, itemDir);
             float grad45 = 0.7071f;
-            return dotProduct > grad45;
+            return dotProduct > grad45 && item.IsInteract;
         }
         return false;
     }

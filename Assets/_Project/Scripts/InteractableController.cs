@@ -32,7 +32,7 @@ public class InteractableController : MonoBehaviour, IInteractSubscriber
 
     private IInteractable FindItem()
     {
-        var ray = _modeController.GetRay();
+        var ray = _modeController.GetPlayerRay();
         if (Physics.Raycast(ray, out var hit, 3, _interactLayer) && hit.collider.gameObject.TryGetComponent<IInteractable>(out var item))
         {
             _uiController.ShowTip();
