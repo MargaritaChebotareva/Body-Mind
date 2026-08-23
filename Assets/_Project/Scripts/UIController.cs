@@ -100,7 +100,7 @@ public class UIController : MonoBehaviour
         _buttonPlay.gameObject.SetActive(false);
         _tip2.gameObject.SetActive(true);
         _modeController.SetMenuMode(false);
-        ShowMessage("Objective: open the door");
+        ShowMessage("Objective: open the door", 10);
     }
 
     public void Win()
@@ -174,20 +174,20 @@ public class UIController : MonoBehaviour
         _messageImage.gameObject.SetActive(false);
     }
 
-    public void HideMessageDelay()
+    public void HideMessageDelay(float delay)
     {
         if (_coroutineHideMessage != null)
         {
             StopCoroutine(_coroutineHideMessage);
             _coroutineHideMessage = null;
         }
-        _coroutineHideMessage = StartCoroutine(WaitAndDo(1.5f, () =>
+        _coroutineHideMessage = StartCoroutine(WaitAndDo(delay, () =>
         {
             HideMessage();
         }));
     }
 
-    public void ShowMessage(string text)
+    public void ShowMessage(string text, float hideDelay = 3)
     {
         if (_coroutineHideMessage != null)
         {
@@ -196,7 +196,7 @@ public class UIController : MonoBehaviour
         }
         _messageText.text = text;
         _messageImage.gameObject.SetActive(true);
-        HideMessageDelay();
+        HideMessageDelay(hideDelay);
     }
 
     public void ShowModeText(bool bodyMode)
