@@ -17,6 +17,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private Image _messageImage;
     [SerializeField] private Image _buttonPlay;
     [SerializeField] private Image _fadeWhite;
+    [SerializeField] private Image _title;
     private Coroutine _coroutineHidePin;
     private Coroutine _coroutineHideMessage;
     private ModeController _modeController;
@@ -92,12 +93,14 @@ public class UIController : MonoBehaviour
     {
         _buttonPlay.gameObject.SetActive(true);
         _modeController.SetMenuMode(true);
+        _title.gameObject.SetActive(true);
         _tip2.gameObject.SetActive(false);
     }
 
     public void ShowGame()
     {
         _buttonPlay.gameObject.SetActive(false);
+        _title.gameObject.SetActive(false);
         _tip2.gameObject.SetActive(true);
         _modeController.SetMenuMode(false);
         ShowMessage("Objective: open the door", 10);
