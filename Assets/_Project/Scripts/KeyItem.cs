@@ -152,4 +152,21 @@ public class KeyDoorItem
 {
     [SerializeField] public int Key;
     [SerializeField] public GameObject Door;
+
+    public void Init()
+    {
+        Door.GetComponent<Door>().Locked = true;
+    }
+}
+
+[Serializable]
+public class PincodeDoorItem
+{
+    [SerializeField] public string Pincode;
+    [SerializeField] public GameObject Door;
+
+    public void Init()
+    {
+        Door.GetComponent<Door>().Locked = true;
+    }
 }

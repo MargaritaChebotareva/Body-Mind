@@ -9,6 +9,7 @@ public class Door : MonoBehaviour, IInteractable
     private Quaternion _openRotation;
     private Quaternion _closeRotation;
     [SerializeField] private KeyController _keyController;
+    public bool Locked = false;
 
     private void Start()
     {
@@ -18,26 +19,28 @@ public class Door : MonoBehaviour, IInteractable
 
     public void Interact(bool canInteract)
     {
-        if (_keyController.CanOpen(this))
+        if (canInteract)
         {
-            var flag = !_isOpen;
-            if (_coroutine != null)
-            {
-                StopCoroutine(_coroutine);
-                _coroutine = null;
-            }
-            if (flag)
-            {
-                _coroutine = StartCoroutine(Open(_openRotation, 3, () => { _isOpen = true; }));
-            }
-            else
-            {
-                _coroutine = StartCoroutine(Open(_closeRotation, 1.5f, () => { _isOpen = false; }));
-            }
+            _keyController.RequestOpen(this);
+        }
+    }
+
+    public void OpenDoor()
+    {
+        Locked = false;
+        var flag = !_isOpen;
+        if (_coroutine != null)
+        {
+            StopCoroutine(_coroutine);
+            _coroutine = null;
+        }
+        if (flag)
+        {
+            _coroutine = StartCoroutine(Open(_openRotation, 3, () => { _isOpen = true; }));
         }
         else
         {
-            // TODO
+            _coroutine = StartCoroutine(Open(_closeRotation, 1.5f, () => { _isOpen = false; }));
         }
     }
 

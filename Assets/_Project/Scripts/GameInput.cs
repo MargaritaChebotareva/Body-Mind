@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -10,6 +11,7 @@ public class GameInput : MonoBehaviour
     private List<ILookSubscriber> _lookSubscribers = new();
     private List<IInteractSubscriber> _interactSubscribers = new();
     private List<ILookAroundSubscriber> _lookAroundSubscribers = new();
+    private List<Func<char, bool>> _textInputSubscribers = new();
 
     private InputAction _moveAction;
     private InputAction _lookAction;
@@ -32,6 +34,8 @@ public class GameInput : MonoBehaviour
         _lookAction.Enable();
         _interactAction.Enable();
         _lookAroundAction.Enable();
+
+        Keyboard.current.onTextInput += OnTextInput;
     }
 
     private void OnLookAroundActionPerformed(InputAction.CallbackContext obj)
@@ -74,6 +78,8 @@ public class GameInput : MonoBehaviour
         _lookAction.Disable();
         _interactAction.Disable();
         _lookAroundAction.Disable();
+
+        Keyboard.current.onTextInput -= OnTextInput;
     }
 
     public void RegistrateMove(IMoveSubscriber moveSubscriber)
@@ -114,6 +120,28 @@ public class GameInput : MonoBehaviour
     public void UnregistrateLookAround(ILookAroundSubscriber lookAroundSubscriber)
     {
         _lookAroundSubscribers.Remove(lookAroundSubscriber);
+    }
+
+    public void WaitForPin(Func<char, bool> onValueEntered)
+    {
+        _textInputSubscribers.Add(onValueEntered);
+    }
+
+    private void OnTextInput(char c)
+    {
+        List<Func<char, bool>> toRemove = new();
+        foreach (var x in _textInputSubscribers)
+        {
+            if (!x(c))
+            {
+                toRemove.Add(x);
+            }
+        }
+
+        foreach (var x in toRemove)
+        {
+            _textInputSubscribers.Remove(x);
+        }
     }
 }
 

@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,10 +10,18 @@ public class KeyController : MonoBehaviour
     [SerializeField] private List<MindBodyItem> _mindBodyItems;
     [SerializeField] private List<KeyItemNotInteract> _keyItemInHand;
     [SerializeField] private List<KeyDoorItem> _doorsAndKeys;
-    private readonly HashSet<int> _keyItemInHandId = new();
+    [SerializeField] private List<PincodeDoorItem> _pincodeDoors;
 
-    public void Init()
+    private UIController _uiController;
+    private GameInput _gameInput;
+    private readonly HashSet<int> _keyItemInHandId = new();
+    private Coroutine _coroutineListenPin;
+
+    public void Init(UIController uiController, GameInput gameInput)
     {
+        _uiController = uiController;
+        _gameInput = gameInput;
+
         foreach (var x in _keyItemOnScene)
         {
             x.Init(this);
@@ -25,6 +35,16 @@ public class KeyController : MonoBehaviour
         foreach (var x in _mindBodyItems)
         {
             x.Init(this);
+        }
+
+        foreach (var x in _doorsAndKeys)
+        {
+            x.Init();
+        }
+
+        foreach (var x in _pincodeDoors)
+        {
+            x.Init();
         }
     }
 
@@ -53,14 +73,74 @@ public class KeyController : MonoBehaviour
         }
     }
 
-    public bool CanOpen(Door door)
+    public void RequestOpen(Door door)
     {
-        var item = _doorsAndKeys.FirstOrDefault(x => x.Door == door.gameObject);
-        if (item == null)
+        // not locked door
+        if (!door.Locked)
         {
-            return true;
+            door.OpenDoor();
+            return;
         }
 
-        return _keyItemInHandId.Contains(item.Key);
+        // door with key
+        var keyItem = _doorsAndKeys.FirstOrDefault(x => x.Door == door.gameObject);
+        if (keyItem != null)
+        {
+            if (_keyItemInHandId.Contains(keyItem.Key))
+            {
+                door.OpenDoor();
+            }
+
+            return;
+        }
+
+        // door with pincode
+        var pincodeItem = _pincodeDoors.FirstOrDefault(x => x.Door == door.gameObject);
+        if (pincodeItem != null && !string.IsNullOrEmpty(pincodeItem.Pincode))
+        {
+            _uiController.RequestEnterPin();
+            
+            string pin = "";
+            _gameInput.WaitForPin(c =>
+            {
+                if (pin.Length > 0 && !char.IsDigit(c))
+                {
+                    // invalid letter
+                    _uiController.WrongPin();
+                    return false;
+                }
+
+                if (char.IsDigit(c))
+                {
+                    pin += c;
+                }
+
+                _uiController.ShowPin(pin);
+                if (pin.Length >= pincodeItem.Pincode.Length)
+                {
+                    if (pincodeItem.Pincode == pin)
+                    {
+                        // correct pin
+                        _uiController.CorrectPin();
+                        door.OpenDoor();
+                    }
+                    else
+                    {
+                        // incorrect pin
+                        _uiController.WrongPin();
+                    }
+
+                    return false;
+                }
+
+                // continue typing
+                return true;
+            });
+
+            return;
+        }
+
+        door.OpenDoor();
+        return;
     }
 }
