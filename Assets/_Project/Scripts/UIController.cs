@@ -84,7 +84,6 @@ public class UIController : MonoBehaviour
     public void CorrectPin()
     {
         HidePin(true);
-        HideMessageDelay();
     }
 
     public void ShowMenu()
@@ -111,6 +110,8 @@ public class UIController : MonoBehaviour
         _modeController.OnLookAround(true);
 
         yield return new WaitForSeconds(1.5f);
+
+        _modeController.OnLookAround(false);
 
         var fadeTime = 2f;
         var time = fadeTime;
@@ -189,5 +190,6 @@ public class UIController : MonoBehaviour
         }
         _messageText.text = text;
         _messageImage.gameObject.SetActive(true);
+        HideMessageDelay();
     }
 }
