@@ -1,7 +1,6 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public class KeyController : MonoBehaviour
@@ -16,13 +15,15 @@ public class KeyController : MonoBehaviour
     private UIController _uiController;
     private GameInput _gameInput;
     private SoundBar _soundBar;
+    private ModeController _modeController;
     private readonly HashSet<int> _keyItemInHandId = new();
 
-    public void Init(UIController uiController, GameInput gameInput, SoundBar soundBar)
+    public void Init(UIController uiController, GameInput gameInput, SoundBar soundBar, ModeController modeController)
     {
         _uiController = uiController;
         _gameInput = gameInput;
         _soundBar = soundBar;
+        _modeController = modeController;
 
         foreach (var door in _allDoorsRoot.GetComponentsInChildren<Door>())
         {
@@ -182,5 +183,41 @@ public class KeyController : MonoBehaviour
         {
             _uiController.Win();
         }
+    }
+
+    public bool HasKey(int id)
+    {
+        return _keyItemInHandId.Contains(id);
+    }
+
+    public void InteractWithKeyItemOnScene(int id)
+    {
+        if (!HasKey(id))
+        {
+            var index = _keyItemOnScene.FindIndex(x => x.Id == id);
+            var item = _keyItemOnScene[index];
+            item.Interact(true);
+        }
+    }
+
+    public bool CanSee(int id)
+    {
+        if (!HasKey(id))
+        {
+            var index = _keyItemOnScene.FindIndex(x => x.Id == id);
+            var item = _keyItemOnScene[index];
+            var position = item.GetKeyPos();
+            var ray = _modeController.GetRay();
+            var cameraDir = ray.direction;
+            var itemDir = (position - ray.origin).normalized;
+            cameraDir.y = 0;
+            cameraDir.Normalize();
+            itemDir.y = 0;
+            itemDir.Normalize();
+            float dotProduct = Vector3.Dot(cameraDir, itemDir);
+            float grad45 = 0.7071f;
+            return dotProduct > grad45;
+        }
+        return false;
     }
 }

@@ -52,6 +52,11 @@ public class KeyItem
             _key.gameObject.SetActive(!_isBodyMode);
         }
     }
+
+    public Vector3 GetKeyPos()
+    {
+        return _key.transform.position;
+    }
 }
 
 [Serializable]

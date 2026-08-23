@@ -11,6 +11,8 @@ public class ModeController : MonoBehaviour, ILookAroundSubscriber
     private MovementController _movementController;
     private AudioSource _audioSource;
 
+    private CinemachineCamera _currentPlayerCamera;
+    private Vector3 _viewPoint = new(0.5f, 0.5f, 0);
     public void Init(GameInput gameInput, KeyController keyController, MovementController movementController, SoundBar soundBar)
     {
         _gameInput = gameInput;
@@ -43,17 +45,12 @@ public class ModeController : MonoBehaviour, ILookAroundSubscriber
         if (active)
         {
             _menuCamera.Priority = 50;
-            _keyController.OnModeChanged(false);
-            _movementController.OnModeChanged(false);
+            FocusOnMind(true);
         }
         else
         {
             _menuCamera.Priority = 0;
-            _bodyCamera.Priority.Value = 10;
-            _mindCamera.Priority.Value = 5;
-            _keyController.OnModeChanged(true);
-            _movementController.OnModeChanged(true);
-            FocusOnBody();
+            FocusOnBody(true);
         }
     }
 
@@ -63,26 +60,35 @@ public class ModeController : MonoBehaviour, ILookAroundSubscriber
         _movementController.InitStates();
     }
 
-    private void FocusOnBody()
+    private void FocusOnBody(bool silent = false)
     {
         _bodyCamera.Priority.Value = 10;
         _mindCamera.Priority.Value = 5;
         _keyController.OnModeChanged(true);
         _movementController.OnModeChanged(true);
-        _audioSource?.Stop();
+        _currentPlayerCamera = _bodyCamera;
+        if (!silent) _audioSource?.Stop();
     }
 
-    private void FocusOnMind()
+    private void FocusOnMind(bool silent = false)
     {
         _mindCamera.Priority.Value = 15;
         _keyController.OnModeChanged(false);
         _movementController.OnModeChanged(false);
-        _audioSource?.Play();
+        _currentPlayerCamera = _mindCamera;
+        if (!silent) _audioSource?.Play();
     }
 
     private void OnDestroy()
     {
         _gameInput.UnregistrateLookAround(this);
+    }
+
+    public Ray GetRay()
+    {
+        Ray ray = Camera.main.ViewportPointToRay(_viewPoint);
+        ray.origin = _currentPlayerCamera.Target.TrackingTarget.position;
+        return ray;
     }
 }
 

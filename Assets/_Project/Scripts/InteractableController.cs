@@ -7,13 +7,14 @@ public class InteractableController : MonoBehaviour, IInteractSubscriber
     [SerializeField] private LayerMask _interactLayer;
     private GameInput _gameInput;
     private UIController _uiController;
-    private Vector3 _viewPoint = new(0.5f, 0.5f, 0);
+    private ModeController _modeController;
 
-    public void Init(GameInput gameInput, UIController uIController)
+    public void Init(GameInput gameInput, UIController uIController, ModeController modeController)
     {
         _gameInput = gameInput;
         _gameInput.RegistrateInteract(this);
         _uiController = uIController;
+        _modeController = modeController;
     }
 
     private void Start()
@@ -31,8 +32,8 @@ public class InteractableController : MonoBehaviour, IInteractSubscriber
 
     private IInteractable FindItem()
     {
-        var ray = _mainCamera.ViewportPointToRay(_viewPoint);
-        if (Physics.Raycast(ray, out var hit, 20, _interactLayer) && hit.collider.gameObject.TryGetComponent<IInteractable>(out var item))
+        var ray = _modeController.GetRay();
+        if (Physics.Raycast(ray, out var hit, 3, _interactLayer) && hit.collider.gameObject.TryGetComponent<IInteractable>(out var item))
         {
             _uiController.ShowTip();
             return item;

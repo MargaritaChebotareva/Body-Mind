@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class UIController : MonoBehaviour
 {
     [SerializeField] private Image _tip;
+    [SerializeField] private Image _triggerTip;
+
     [SerializeField] private Image _pinLabel;
     [SerializeField] private Text _pinInput;
 
@@ -25,6 +27,7 @@ public class UIController : MonoBehaviour
         _modeController = modeController;
         
         HideTip();
+        HideTriggerTip();
         HidePin(false);
         HideMessage();
         ShowMenu();
@@ -41,6 +44,15 @@ public class UIController : MonoBehaviour
         _tip.gameObject.SetActive(false);
     }
 
+    public void ShowTriggerTip()
+    {
+        _triggerTip.gameObject.SetActive(true);
+    }
+
+    public void HideTriggerTip()
+    {
+        _triggerTip.gameObject.SetActive(false);
+    }
     public void RequestEnterPin()
     {
         if (_coroutineHidePin != null)
