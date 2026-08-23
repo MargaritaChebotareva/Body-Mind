@@ -15,12 +15,14 @@ public class KeyController : MonoBehaviour
 
     private UIController _uiController;
     private GameInput _gameInput;
+    private SoundBar _soundBar;
     private readonly HashSet<int> _keyItemInHandId = new();
 
-    public void Init(UIController uiController, GameInput gameInput)
+    public void Init(UIController uiController, GameInput gameInput, SoundBar soundBar)
     {
         _uiController = uiController;
         _gameInput = gameInput;
+        _soundBar = soundBar;
 
         foreach (var door in _allDoorsRoot.GetComponentsInChildren<Door>())
         {
@@ -72,6 +74,7 @@ public class KeyController : MonoBehaviour
         int index = _keyItemInHand.FindIndex(key => key.Id == id);
         _keyItemInHand[index].SetActive(true);
         _keyItemInHandId.Add(id);
+        _soundBar.PlayOnCharacter(_soundBar.PickItem);
     }
 
     public void OnModeChanged(bool isBodyMode)
@@ -97,6 +100,7 @@ public class KeyController : MonoBehaviour
         // not locked door
         if (!door.Locked)
         {
+            door.PlaySound(door.IsOpen ? _soundBar.DoorClosed : _soundBar.DoorOpen);
             ProceedWithOpening(door);
             return;
         }
@@ -107,10 +111,12 @@ public class KeyController : MonoBehaviour
         {
             if (_keyItemInHandId.Contains(keyItem.Key))
             {
+                door.PlaySound(_soundBar.DoorUnlocked);
                 _uiController.ShowMessage("Door unlocked");
                 ProceedWithOpening(door);
             }
 
+            door.PlaySound(_soundBar.DoorLocked);
             return;
         }
 
@@ -119,19 +125,22 @@ public class KeyController : MonoBehaviour
         if (pincodeItem != null && !string.IsNullOrEmpty(pincodeItem.Pincode))
         {
             _uiController.RequestEnterPin();
-            
+            door.PlaySound(_soundBar.PinStart);
+
             string pin = "";
             _gameInput.WaitForPin(c =>
             {
                 if (pin.Length > 0 && !char.IsDigit(c))
                 {
                     // invalid letter
+                    door.PlaySound(_soundBar.PinError);
                     _uiController.IncorrectPin();
                     return false;
                 }
 
                 if (char.IsDigit(c))
                 {
+                    door.PlaySound(_soundBar.PinInput);
                     pin += c;
                 }
 
@@ -142,10 +151,12 @@ public class KeyController : MonoBehaviour
                     {
                         _uiController.CorrectPin();
                         _uiController.ShowMessage("Door unlocked");
+                        door.PlaySound(_soundBar.DoorUnlocked);
                         ProceedWithOpening(door);
                     }
                     else
                     {
+                        door.PlaySound(_soundBar.PinError);
                         _uiController.IncorrectPin();
                     }
 
@@ -160,6 +171,7 @@ public class KeyController : MonoBehaviour
         }
 
         ProceedWithOpening(door);
+        door.PlaySound(door.IsOpen ? _soundBar.DoorClosed : _soundBar.DoorOpen);
         return;
     }
 

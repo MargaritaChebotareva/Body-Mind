@@ -10,14 +10,15 @@ public class GameFlow : MonoBehaviour
     [SerializeField] private UIController _uIController;
     [SerializeField] private InteractableController _interactableController;
     [SerializeField] private KeyController _keyController;
-    
+    [SerializeField] private SoundBar _soundBar;
+
 
     public void OnEnable()
     {
         _movementController.Init(_gameInput, _animationController);
         _animationController.Init(_gameInput);
-        _keyController.Init(_uIController, _gameInput);
-        _modeController.Init(_gameInput, _keyController, _movementController);
+        _keyController.Init(_uIController, _gameInput, _soundBar);
+        _modeController.Init(_gameInput, _keyController, _movementController, _soundBar);
         _uIController.Init(_modeController);
         _interactableController.Init(_gameInput, _uIController);
     }

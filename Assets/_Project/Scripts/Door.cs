@@ -7,15 +7,18 @@ public class Door : MonoBehaviour, IInteractable
     private bool _isOpen = false;
     private Coroutine _coroutine;
     private Quaternion _openRotation;
+    private AudioSource _audioSource;
     private Quaternion _closeRotation;
     [SerializeField] private KeyController _keyController;
     public bool Locked = false;
+    public bool IsOpen => _isOpen;
     [SerializeField] public bool FinalDoor;
 
     public void Init()
     {
         _closeRotation = transform.localRotation;
         _openRotation = _closeRotation * Quaternion.Euler(0f, 90, 0f);
+        _audioSource = gameObject.AddComponent<AudioSource>();
     }
 
     public void ResetDoorState()
@@ -70,5 +73,13 @@ public class Door : MonoBehaviour, IInteractable
             yield return null;
         }
         callback?.Invoke();
+    }
+
+    public void PlaySound(AudioClip audio)
+    {
+        if (audio != null)
+        {
+            _audioSource.PlayOneShot(audio);
+        }
     }
 }
