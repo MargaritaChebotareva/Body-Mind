@@ -3239,9 +3239,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterController: {fileID: 991019344}
-  _speed: 10
+  _speed: 4
   _acceleration: 25
-  _rotationSpeed: 90
+  _rotationSpeed: 180
+  _animationSpeed: 10
   _gravity: -9.81
 --- !u!4 &991019343 stripped
 Transform:
