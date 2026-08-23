@@ -87,6 +87,7 @@ public class KeyController : MonoBehaviour
         {
             if (_keyItemInHandId.Contains(keyItem.Key))
             {
+                _uiController.ShowMessage("Door unlocked");
                 ProceedWithOpening(door);
             }
 
@@ -120,6 +121,7 @@ public class KeyController : MonoBehaviour
                     if (pincodeItem.Pincode == pin)
                     {
                         _uiController.CorrectPin();
+                        _uiController.ShowMessage("Door unlocked");
                         ProceedWithOpening(door);
                     }
                     else

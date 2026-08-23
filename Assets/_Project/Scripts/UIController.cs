@@ -67,7 +67,6 @@ public class UIController : MonoBehaviour
     public void CorrectPin()
     {
         HidePin(true);
-        ShowMessage("Door unlocked");
         HideMessageDelay();
     }
 
