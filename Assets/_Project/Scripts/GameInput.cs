@@ -56,10 +56,10 @@ public class GameInput : MonoBehaviour
         // var look = _lookAction.ReadValue<Vector2>();
 
         var movement = _moveAction.ReadValue<Vector2>();
-        foreach (var item in _lookSubscribers)
+        /*foreach (var item in _lookSubscribers)
         {
             item.OnLook(movement);
-        }
+        }*/
 
         foreach (var item in _moveSubscribers)
         {

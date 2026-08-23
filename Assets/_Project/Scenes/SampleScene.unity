@@ -2996,6 +2996,7 @@ MonoBehaviour:
   _speed: 10
   _acceleration: 25
   _rotationSpeed: 90
+  _gravity: -9.81
 --- !u!4 &991019343 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 39d50a768e59a034e8be7dcf94267c63, type: 3}
@@ -3356,7 +3357,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1196344162
 Transform:
   m_ObjectHideFlags: 0
@@ -3366,7 +3367,7 @@ Transform:
   m_GameObject: {fileID: 1196344161}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.16, y: -0.5, z: -3.62}
+  m_LocalPosition: {x: 10.16, y: -0.6, z: -3.62}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
