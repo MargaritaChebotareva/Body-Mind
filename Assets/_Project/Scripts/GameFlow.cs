@@ -17,7 +17,7 @@ public class GameFlow : MonoBehaviour
         _movementController.Init(_gameInput, _animationController);
         _animationController.Init(_gameInput);
         _keyController.Init(_uIController, _gameInput);
-        _modeController.Init(_gameInput, _keyController);
+        _modeController.Init(_gameInput, _keyController, _movementController);
         _uIController.Init(_modeController);
         _interactableController.Init(_gameInput, _uIController);
     }
