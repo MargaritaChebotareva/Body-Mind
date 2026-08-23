@@ -9,12 +9,16 @@ public class UIController : MonoBehaviour
     [SerializeField] private Image _pinLabel;
     [SerializeField] private Text _pinInput;
 
+    [SerializeField] private Text _messageText;
+    [SerializeField] private Image _messageImage;
     private Coroutine _coroutineHidePin;
+    private Coroutine _coroutineHideMessage;
 
     public void Init()
     {
         HideTip();
         HidePin(false);
+        HideMessage();
     }
 
     public void ShowTip()
@@ -29,6 +33,12 @@ public class UIController : MonoBehaviour
 
     public void RequestEnterPin()
     {
+        if (_coroutineHidePin != null)
+        {
+            StopCoroutine(_coroutineHidePin);
+            _coroutineHidePin = null;
+        }
+
         _pinInput.text = "";
         _pinLabel.gameObject.SetActive(true);
     }
@@ -52,29 +62,31 @@ public class UIController : MonoBehaviour
     public void CorrectPin()
     {
         HidePin(true);
+        ShowMessage("Door unlocked");
+        HideMessageDelay();
     }
 
     private void HidePin(bool delayed)
     {
-        if (!delayed)
-        {
-            _pinLabel.gameObject.SetActive(false);
-            return;
-        }
-
         if (_coroutineHidePin != null)
         {
             StopCoroutine(_coroutineHidePin);
             _coroutineHidePin = null;
         }
 
-        _coroutineHidePin = StartCoroutine(HidePinRoutine(1.5f, () =>
+        if (!delayed)
+        {
+            _pinLabel.gameObject.SetActive(false);
+            return;
+        }        
+
+        _coroutineHidePin = StartCoroutine(WaitAndDo(1.5f, () =>
         {
             _pinLabel.gameObject.SetActive(false);
         }));
     }
 
-    public IEnumerator HidePinRoutine(float period, Action callback)
+    public IEnumerator WaitAndDo(float period, Action callback)
     {
         var startTime = Time.time;
         while (startTime + period > Time.time)
@@ -83,5 +95,34 @@ public class UIController : MonoBehaviour
         }
 
         callback?.Invoke();
+    }
+
+    public void HideMessage()
+    {
+        _messageImage.gameObject.SetActive(false);
+    }
+
+    public void HideMessageDelay()
+    {
+        if (_coroutineHideMessage != null)
+        {
+            StopCoroutine(_coroutineHideMessage);
+            _coroutineHideMessage = null;
+        }
+        _coroutineHideMessage = StartCoroutine(WaitAndDo(1.5f, () =>
+        {
+            HideMessage();
+        }));
+    }
+
+    public void ShowMessage(string text)
+    {
+        if (_coroutineHideMessage != null)
+        {
+            StopCoroutine(_coroutineHideMessage);
+            _coroutineHideMessage = null;
+        }
+        _messageText.text = text;
+        _messageImage.gameObject.SetActive(true);
     }
 }
