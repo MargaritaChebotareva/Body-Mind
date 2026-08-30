@@ -11,6 +11,7 @@ public class GameFlow : MonoBehaviour
     [SerializeField] private KeyController _keyController;
     [SerializeField] private SoundBar _soundBar;
     [SerializeField] private TriggerController _triggerController;
+    [SerializeField] private LightMapController _lightMapController;
 
     [SerializeField] private LayerMask _playerMask;
     public void OnEnable()
@@ -22,6 +23,7 @@ public class GameFlow : MonoBehaviour
         _uIController.Init(_modeController);
         _interactableController.Init(_gameInput, _uIController, _modeController);
         _triggerController.Init(_gameInput, _keyController, _uIController);
+        _lightMapController.Init(_gameInput);
     }
 
 }
