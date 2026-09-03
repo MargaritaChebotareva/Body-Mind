@@ -28,7 +28,7 @@ public class KeyItem
         _item.Init(this);
     }
 
-    public void Interact(bool canInteract)
+    public void Interact()
     {
         if (!IsInteract)
         {

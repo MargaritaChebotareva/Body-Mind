@@ -33,12 +33,9 @@ public class Door : MonoBehaviour, IInteractable
         _isOpen = false;
     }
 
-    public void Interact(bool canInteract)
+    public void Interact()
     {
-        if (canInteract)
-        {
-            _keyController.RequestOpen(this);
-        }
+        _keyController.RequestOpen(this);
     }
 
     public void OpenDoor()

@@ -49,7 +49,7 @@ public class InteractableController : MonoBehaviour, IInteractSubscriber
         var item = FindItem();
         if (item != null)
         {
-            item.Interact(true);
+            item.Interact();
         }
     }
 

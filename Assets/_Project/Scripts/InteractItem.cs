@@ -10,9 +10,9 @@ public class InteractItem : MonoBehaviour, IInteractable
         IsInteract = _keyItem.IsInteract;
     }
 
-    public void Interact(bool canInteract)
+    public void Interact()
     {
-        _keyItem.Interact(canInteract);
+        _keyItem.Interact();
     }
 
     public void ChangeInteract()

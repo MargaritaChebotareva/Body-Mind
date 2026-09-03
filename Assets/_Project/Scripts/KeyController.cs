@@ -198,7 +198,7 @@ public class KeyController : MonoBehaviour
         {
             var index = _keyItemOnScene.FindIndex(x => x.Id == id);
             var item = _keyItemOnScene[index];
-            item.Interact(true);
+            item.Interact();
         }
     }
 

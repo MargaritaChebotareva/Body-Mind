@@ -11,7 +11,7 @@ public class InteractSoundItem : MonoBehaviour, IInteractable
         _audioSource.clip = _clip;
     }
 
-    public void Interact(bool canInteract)
+    public void Interact()
     {
         _audioSource.Stop();
         _audioSource.Play();
