@@ -12,6 +12,7 @@ public class LightMapController : MonoBehaviour, ILookAroundSubscriber
     private GameInput _gameInput;
     public void Init(GameInput gameInput)
     {
+        return;
         _gameInput = gameInput;
         _gameInput.RegistrateLookAround(this);
 
@@ -41,6 +42,6 @@ public class LightMapController : MonoBehaviour, ILookAroundSubscriber
 
     private void OnDestroy()
     {
-        _gameInput.UnregistrateLookAround(this);
+        //_gameInput.UnregistrateLookAround(this);
     }
 }
