@@ -85,10 +85,10 @@ public class KeyItem
         {
             return false;
         }
-        var newRay = new Ray(position, ray.origin - position);
-        if (Physics.Raycast(newRay, out var hit))
+        var newItemDir = new Ray(ray.origin, position - ray.origin);
+        if (Physics.Raycast(newItemDir, out var hit, newItemDir.direction.magnitude + 5, ~_layerMask))
         {
-            if (hit.collider.gameObject.layer == _layerMask)
+            if (hit.collider.gameObject == _item.gameObject || hit.collider.gameObject == _key.gameObject)
             {
                 return true;
             }

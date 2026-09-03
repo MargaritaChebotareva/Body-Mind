@@ -4999,7 +4999,7 @@ Transform:
   m_GameObject: {fileID: 736669576}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.51, y: 2.45, z: -5.1}
+  m_LocalPosition: {x: 10.688, y: 2.45, z: -5.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10568,9 +10568,9 @@ MonoBehaviour:
   _soundBar: {fileID: 1223238493}
   _triggerController: {fileID: 4326036772681163663}
   _lightMapController: {fileID: 1748680161}
-  _playerMask:
+  _ignoreLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 136
 --- !u!4 &1748680160
 Transform:
   m_ObjectHideFlags: 0
